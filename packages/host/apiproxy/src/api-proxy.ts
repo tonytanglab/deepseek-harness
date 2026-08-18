@@ -2410,7 +2410,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
             details: { value: clientTimeZone },
           })
         }
-        const resolved = await turnAgentFor<{ accepted: true }>(request, sessionId)
+        const resolved = await turnAgentFor<{ accepted: true; messageId: UserMessage['id'] }>(request, sessionId)
         if ('refused' in resolved) return resolved.refused
         const agent = resolved.agent
         // Request identity and optional browser zone ride the exact durable user message.
@@ -2420,7 +2420,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
           ...(canonicalTimeZone === undefined ? {} : { clientTimeZone: canonicalTimeZone }),
         }
         const hasImage = content.some(part => part.type === 'image')
-        const admit = async (): Promise<RpcResponse<{ accepted: true }>> => {
+        const admit = async (): Promise<RpcResponse<{ accepted: true; messageId: UserMessage['id'] }>> => {
           try {
             if (hasImage) {
               const current = selectionFor(agent).current
@@ -2437,6 +2437,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
             const message: UserMessage = createUserMessage({ content: durable, source })
             if (mode === 'steer') agent.steer(message)
             else agent.followup(message)
+            return ok(request, { accepted: true as const, messageId: message.id })
           } catch (error: unknown) {
             if (error instanceof AttachmentError) {
               return err(request, {
@@ -2451,7 +2452,6 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
               details: { reason: String(error) },
             })
           }
-          return ok(request, { accepted: true as const })
         }
         return hasImage ? serializeImageAdmission(agent, admit) : admit()
       },
@@ -3265,6 +3265,9 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
             configured: info.configured,
             ...info.source === undefined ? {} : { source: info.source },
             writable: info.writable,
+            ...info.writableScopes === undefined ? {} : { writableScopes: [...info.writableScopes] },
+            ...info.defaultScope === undefined ? {} : { defaultScope: info.defaultScope },
+            ...info.scope === undefined ? {} : { scope: info.scope },
           }
           return [ref, view] as const
         }))
@@ -3274,9 +3277,9 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
       async set(request) {
         const credentials = ctx.get('credentials')
         if (credentials === undefined) return err(request, credentialsAbsent())
-        const { ref, value } = request.payload
+        const { ref, value, scope } = request.payload
         try {
-          await credentials.set(credentialRef(ref), value)
+          await credentials.set(credentialRef(ref), value, scope)
         } catch (error: unknown) {
           return err(request, {
             code: 'credential-rejected',
@@ -3290,9 +3293,9 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
       async unset(request) {
         const credentials = ctx.get('credentials')
         if (credentials === undefined) return err(request, credentialsAbsent())
-        const { ref } = request.payload
+        const { ref, scope } = request.payload
         try {
-          await credentials.unset(credentialRef(ref))
+          await credentials.unset(credentialRef(ref), scope)
         } catch (error: unknown) {
           return err(request, {
             code: 'credential-rejected',
