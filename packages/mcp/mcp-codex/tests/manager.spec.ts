@@ -596,11 +596,9 @@ describe('Codex MCP lifecycle manager', () => {
   it('retains only the most recent maxToolEvents tool entries', async () => {
     const { manager, workspace } = await setup({ maxToolEvents: 2 })
     const run = await manager.start({ workspace, task: 'tool-storm' })
-    // eslint-disable-next-line no-console
-    console.log('DEBUG storm', run.status, run.error, run.lastEventSeq, JSON.stringify(run.lastToolEvents))
     expect(run.lastToolEvents).toEqual([
-      { kind: 'result', callId: 'tool-call-2', summary: 'out-2', error: null, truncated: false },
       { kind: 'call', callId: 'tool-call-3', name: 'tool-3', arguments: '{"n":3}', truncated: false },
+      { kind: 'result', callId: 'tool-call-3', summary: 'out-3', error: null, truncated: false },
     ])
     await manager.close()
   })

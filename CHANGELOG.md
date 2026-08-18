@@ -49,6 +49,13 @@ Get-Date -Format 'yyyy-MM-dd HH:mm'
 6. 发布时把本期条目移动到 `## <version> — YYYY-MM-DD`，随后保留空的 `Unreleased`。
 -->
 
+### 2026-08-18 19:42 | [BUILD] 将个人 Codex MCP 插件整合到 rc.7 基线
+- **变更内容**：`codex/harness-bridge` 以官方 `0.1.0-rc.7` 为基线承载个人仓库的 Codex MCP 监管插件；新包、MCP server 身份和安装示例统一为 rc.7，工具事件尾部测试按 `maxToolEvents` 的最近事件语义断言并移除调试输出。
+- **影响范围**：`@deepseek-ai/dsh-mcp-codex`、`@deepseek-ai/dsh-codex`、Codex 用户指南及工具事件保留测试；未修改 MCP 工具 schema、会话事件或磁盘格式。
+- **兼容与恢复**：个人仓库原有两个提交保留为独立移植提交；分支可回退到 `upstream/master`，不会改写个人仓库 `master`。
+- **Agent Note**：`.agents/notes/implemented/feature/2026-08-17-codex-mcp-visible-session-supervision.md`
+- **验证结果**：Codex MCP 聚焦 Vitest 27/27 PASS；相关凭据、Host、Client、UI 与 subprocess 聚焦 Vitest 327 PASS、1 SKIP；`pnpm run build`、真实 Windows Codex profile E2E 1/1、keyless snapshot 1/1、lint、workspace constraints、Cordis 配置、package invariant、公开仓库链接和两组翻译配对 PASS。`pnpm run doc-sync` 因 Windows 下 `@pnpm/exe` 被 Node 当作 ESM 加载而使 28 个子门禁均未启动；改用 `npm run doc-sync` 后 27/28 PASS，剩余文档站测试因当前 Windows 权限禁止创建文件符号链接而 `EPERM`，生产文档构建 PASS。
+
 ### 2026-08-18 13:38 | [FIX] 让 Codex 项目默认共用用户级 KEY
 - **变更内容**：Codex MCP 现在保留工作区独立运行目录，同时把外层 Harness Home 的 `.credentials.yaml` 作为用户级凭据源传给每个托管 Web 服务；凭据解析按“进程环境变量 > 项目覆盖 > 用户级默认 > 环境文件”执行。模型设置页新增“所有项目 / 仅当前项目”保存范围，切换到所有项目时先写入用户级凭据再移除项目覆盖，删除单个项目的供应商配置也不再误删用户级 KEY。
 - **影响范围**：`@deepseek-ai/dsh-credentials` 的可选 scope 元数据、`@deepseek-ai/dsh-credentials-local` 双文档解析与热更新、Host 凭据 RPC、Codex MCP/Bundle 环境传递、模型设置 UI 及相关中英文文档；凭据值不进入 RPC 新字段、日志或变更记录，既有公共字段与磁盘 YAML 格式保持兼容。

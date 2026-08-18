@@ -13,7 +13,7 @@
   "mcpServers": {
     "deepseek-harness": {
       "command": "npx",
-      "args": ["--yes", "--package=@deepseek-ai/dsh@0.1.0-rc.5", "--", "dsh", "--profile", "codex"]
+      "args": ["--yes", "--package=@deepseek-ai/dsh@0.1.0-rc.7", "--", "dsh", "--profile", "codex"]
     }
   }
 }

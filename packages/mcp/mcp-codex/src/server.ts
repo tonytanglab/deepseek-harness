@@ -25,7 +25,7 @@ export function createMcpServer(
   subprocess: SubprocessRuntime,
 ): McpServer {
   const server = new McpServer(
-    { name: '@deepseek-ai/dsh-mcp-codex', version: '0.1.0-rc.5' },
+    { name: '@deepseek-ai/dsh-mcp-codex', version: '0.1.0-rc.7' },
     {
       instructions: 'Start one visible Harness session, show its webUrl immediately, wait in intervals of at most 30 seconds, use steer_run for live correction, continue a terminal session with start_run.sessionId, and independently review the resulting workspace changes.',
     },
@@ -184,7 +184,7 @@ async function inspectRuntime(config: ResolvedConfig, subprocess: SubprocessRunt
   return {
     ok: node && entryExists,
     node: { version: process.version, execPath: process.execPath, available: node },
-    package: { name: '@deepseek-ai/dsh-mcp-codex', version: '0.1.0-rc.5' },
+    package: { name: '@deepseek-ai/dsh-mcp-codex', version: '0.1.0-rc.7' },
     launcher: { entry: entry ?? null, direct: entryDirect, exists: entryExists, shell: false },
     workspacePolicy: {
       restricted: config.allowedWorkspaceRoots.length > 0,

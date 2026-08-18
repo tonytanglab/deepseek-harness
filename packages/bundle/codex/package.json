@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-codex",
   "description": "The dsh Codex bundle: an MCP stdio supervisor for visible, workspace-scoped Harness Web sessions",
-  "version": "0.1.0-rc.5",
+  "version": "0.1.0-rc.7",
   "publishConfig": {
     "access": "public"
   },
