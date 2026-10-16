@@ -96,6 +96,8 @@ pi-ai 提供登录的提供方可以通过 harness 授权 seam 登录：流程�
 
 ### 解析模型目录
 
+内置 `opencode` 路由包含 OpenCode Console 的免费聊天模型；`opencode-go` 包含其订阅模型，包括 Gemini 4 Argon Contributor 和 Step 5 Preview。每个模型自带 API 协议与端点，因此这两条路由都无需覆盖 `api` 或 `baseURL`。适配器依据 OpenCode 的 [Console](https://opencode.ai/v2/docs/console/models/#endpoints) 与 [Go](https://opencode.ai/v2/docs/console/go/#endpoints) 端点表补充 pi-ai 目录。已保存的自定义 `models` 列表仍会将选择范围限制在该列表内；使用 **恢复默认模型** 可显示完整目录。模型可用性与免费活动仍受 OpenCode 的账户、地区和用量政策约束。
+
 profile 的 `models` 列表会替换而非扩展路由的已安装目录；每个条目从同 id 已安装模型取未设置字段的默认值，因此把路由收窄到两个模型、修正一个容量或添加比已安装目录更新的模型都是一行编辑。`modelOverrides` 无需该代价即可重塑个别已安装目录模型——修正一个模型，保留其余三十七个——当它与 `models` 列表并存、位于手工声明路由上、或点名目录未描述的模型时会被拒绝，因为静默不变的模型会成为别人日后寻找的拼写错误。
 
 ### 带推理（reasoning）与协议兼容运行

@@ -96,6 +96,8 @@ A provider pi-ai ships a login for can be signed into through the harness author
 
 ### Resolve the model catalog
 
+The built-in `opencode` route includes OpenCode Console's free chat models; `opencode-go` includes its subscription models, including Gemini 4 Argon Contributor and Step 5 Preview. Each model carries its own API protocol and endpoint, so neither route needs an `api` or `baseURL` override. The adapter supplements pi-ai's catalog from OpenCode's [Console](https://opencode.ai/v2/docs/console/models/#endpoints) and [Go](https://opencode.ai/v2/docs/console/go/#endpoints) endpoint tables. A saved custom `models` list still restricts selection to that list; use **Restore default models** to expose the complete catalog. Model availability and free offers remain subject to OpenCode's account, region, and usage policies.
+
 A profile's `models` list replaces the route's installed catalog rather than extending it; each entry defaults its unset fields from the installed model of the same id, so narrowing a route to two models, correcting one capacity, or adding a model newer than the installed catalog are one-line edits. `modelOverrides` reshapes individual installed-catalog models without that cost — correct one model, keep the other thirty-seven — and is refused when set beside a `models` list, on a hand-declared route, or naming a model the catalog does not describe, because a silently unchanged model would be a typo someone hunts for later.
 
 ### Run with reasoning and wire compatibility

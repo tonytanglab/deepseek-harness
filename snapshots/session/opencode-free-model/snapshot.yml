@@ -1,0 +1,10 @@
+version: 1
+scenario: opencode-free-model
+profile: headless
+composition: opencode-free-model
+recording: authored
+platform: posix
+header:
+  class: opencode-free-model
+  pin: true
+  toolSchemasSource: text-turn

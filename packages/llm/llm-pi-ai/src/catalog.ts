@@ -13,6 +13,7 @@
  */
 
 import { builtinProviders, getAllBuiltinModels, getBuiltinModels } from '@earendil-works/pi-ai/providers/all'
+import { openCodeCatalog } from './opencode-catalog.ts'
 import type { BuiltinProvider } from '@earendil-works/pi-ai/providers/all'
 import type {
   AnthropicMessagesCompat,
@@ -217,7 +218,7 @@ export function catalogProviderIds(): readonly string[] {
 export function catalogModels(provider: string): Map<string, Model<Api>> {
   if (!catalogProviders().has(provider)) return new Map()
   const models = getBuiltinModels(provider as BuiltinProvider) as Model<Api>[]
-  return new Map(models.map(model => [model.id, model]))
+  return new Map(openCodeCatalog(provider, models).map(model => [model.id, model]))
 }
 
 /**

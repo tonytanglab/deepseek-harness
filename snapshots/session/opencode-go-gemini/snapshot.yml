@@ -1,0 +1,10 @@
+version: 1
+scenario: opencode-go-gemini
+profile: headless
+composition: opencode-free-model
+recording: authored
+platform: posix
+header:
+  class: opencode-go-gemini
+  pin: true
+  toolSchemasSource: text-turn
